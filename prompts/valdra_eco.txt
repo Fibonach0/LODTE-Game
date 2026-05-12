@@ -1,0 +1,29 @@
+ECO: Valdra — La Mentora Caída
+ARCHIVO DESTINO: konr-assets/enemies/valdra_art.png
+
+=== FASE 1 (normal) ===
+PROMPT POSITIVO:
+dark fantasy concept art, a ghostly female warrior spirit, translucent 
+ethereal form, wearing tattered ancient order robes, long silver hair floating,
+sorrowful expression, one hand raised in accusation, deep blue and grey tones,
+cold mist around her feet, ruined tower interior background, dramatic backlight,
+painterly style, no text, no UI, full body, portrait orientation
+
+PROMPT NEGATIVO:
+text, watermark, UI, colorful, cartoonish, anime, modern, bright, happy,
+skeleton, zombie, demon, wings
+
+=== FASE 2 (desencadenada) ===
+PROMPT POSITIVO:
+dark fantasy concept art, a wrathful ghost warrior spirit, translucent 
+form crackling with dark energy, ancient order robes torn and burning at edges,
+silver hair wild and rising, face contorted in rage and grief, both hands raised,
+crimson and void-black energy around her, ruined tower background with cracks
+glowing red, intense dramatic lighting, painterly style, no text, no UI
+
+=== SETTINGS ===
+Modelo: Realistic Vision v5 o DreamShaper XL
+Steps: 35
+CFG Scale: 7.5
+Sampler: DPM++ 2M Karras
+Tamaño: 512x768

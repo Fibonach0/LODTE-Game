@@ -1,0 +1,45 @@
+ENEMIGO: Enjambre de Abejas — "Las pequeñas furias del bosque"
+ARCHIVO DESTINO: assets/enemies/enjambre_art.png
+
+Encuentro de "relleno fácil" temáticamente. No es una abeja, es un
+ENJAMBRE — una nube viva con forma propia. Idealmente forma una silueta
+vagamente humanoide o una espiral amenazante. Bajo HP, ataques múltiples
+de poco daño cada uno. Sirve como cambio de ritmo, casi cómico, en medio
+del peregrinaje pesado.
+
+=== PROMPT POSITIVO ===
+dark fantasy concept art, massive swarm of unnatural black bees forming
+a coiling cloud in mid-air, individual bees visible at edges, denser core
+suggesting a vague humanoid or skull silhouette, pale wings glittering
+faintly in moonlight, pollen drifting like dust motes, broken hollow log
+or shattered hive in foreground, deep nordic forest behind, dramatic
+backlight from above, deep blue-green palette with amber accents on the
+bee bodies, painterly atmospheric perspective, no text, no UI, no human
+figures, full composition, portrait orientation, highly detailed, sense
+of motion and threat, concept art quality
+
+=== PROMPT NEGATIVO ===
+text, watermark, UI, frame, border, modern, cartoonish, anime, cute bees,
+honey jars, fluffy, smiling, sunshine, flowers, picnic, single bee
+close-up macro photography, beekeeping suit, professional photo
+
+=== SETTINGS ===
+Modelo: Realistic Vision v5 o DreamShaper XL
+Steps: 35
+CFG Scale: 7
+Sampler: DPM++ 2M Karras
+Tamaño: 600x800 (portrait)
+Seed: cualquiera (guardar el que mejor capture la silueta humanoide del
+enjambre — eso es lo que le da personalidad)
+
+=== NOTAS DE USO ===
+Slot: enemies.js → ENEMIES.enjambre.image
+    image: 'assets/enemies/enjambre_art.png',
+
+Variantes deseables — opcional:
+- "enjambre furioso" si más tarde hago una versión "élite" del encuentro
+  (agregar "frenzy of bees forming a screaming face, amber eyes glowing")
+
+Tip: si el modelo tiende a hacer una sola abeja gigante en vez del
+enjambre, agregar "thousands of bees swarming, dense cloud of insects"
+y reforzar negativo con "single bee, large bee, giant insect".

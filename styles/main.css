@@ -1,0 +1,1856 @@
+/* =====================================================
+   KONR — La Torre del Umbral
+   Hoja de estilos principal
+   ===================================================== */
+
+:root {
+  --bg: #0a0806;
+  --bg2: #100e0b;
+  --bg3: #1a1612;
+  --surface: #1e1a15;
+  --surface2: #252018;
+  --border: #3a3020;
+  --border2: #4a3f28;
+  --gold: #c9a84c;
+  --gold2: #e8c96a;
+  --gold-dim: #7a6430;
+  --red: #8b2020;
+  --red2: #c43030;
+  --red-dim: #4a1010;
+  --blue: #1a3a5c;
+  --blue2: #2a5a8c;
+  --teal: #1a4a3a;
+  --teal2: #2a7a5a;
+  --purple: #2a1a4a;
+  --purple2: #4a2a8a;
+  --text: #d4c9a8;
+  --text2: #8a7a5a;
+  --text3: #5a4a30;
+  --hp-red: #c43030;
+  --hp-bg: #2a1010;
+  --ithyr-blue: #2a6aaa;
+  --ithyr-bg: #0a1a2a;
+  --scarred: #5a3a1a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 16px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(139,32,32,0.04) 0%, transparent 50%);
+}
+
+h1,h2,h3,.title { font-family: 'Cinzel', serif; }
+
+/* =====================================================
+   SCREENS
+   ===================================================== */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* Transición entre pantallas */
+.screen { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* La pantalla del mapa necesita ser un grid columnar para que el HUD
+   quede arriba y el canvas use el resto del viewport. */
+#screen-map.active {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* =====================================================
+   TITLE SCREEN
+   ===================================================== */
+#screen-title {
+  align-items: center; justify-content: center;
+  text-align: center;
+  background-image:
+    radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.06) 0%, transparent 60%);
+}
+.title-rune {
+  font-size: 80px; opacity: 0.08; position: absolute;
+  font-family: 'Cinzel', serif; color: var(--gold);
+  animation: drift 8s ease-in-out infinite;
+}
+.title-rune:nth-child(1){ top:10%; left:5%; animation-delay:0s; }
+.title-rune:nth-child(2){ top:20%; right:8%; animation-delay:-2s; }
+.title-rune:nth-child(3){ bottom:15%; left:10%; animation-delay:-4s; }
+.title-rune:nth-child(4){ bottom:20%; right:5%; animation-delay:-6s; }
+@keyframes drift {
+  0%,100%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-15px) rotate(3deg); }
+}
+.title-main { position: relative; z-index: 1; }
+.title-eyebrow {
+  font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.3em;
+  color: var(--gold-dim); text-transform: uppercase; margin-bottom: 16px;
+}
+.game-title {
+  font-family: 'Cinzel', serif; font-size: clamp(56px,10vw,96px);
+  font-weight: 700; color: var(--gold2); line-height: 1;
+  text-shadow: 0 0 60px rgba(201,168,76,0.3);
+  letter-spacing: 0.15em;
+  animation: titleGlow 4s ease-in-out infinite;
+}
+@keyframes titleGlow {
+  0%,100%{ text-shadow: 0 0 40px rgba(201,168,76,0.2); }
+  50%{ text-shadow: 0 0 80px rgba(201,168,76,0.5), 0 0 120px rgba(201,168,76,0.2); }
+}
+.title-subtitle {
+  font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.2em;
+  color: var(--text2); margin-top: 8px; text-transform: uppercase;
+}
+.title-divider {
+  width: 200px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  margin: 32px auto;
+}
+.title-lore {
+  font-style: italic; color: var(--text2); max-width: 480px;
+  font-size: 18px; line-height: 1.7; margin: 0 auto 40px;
+}
+.title-version {
+  position: absolute; bottom: 20px; right: 20px;
+  font-size: 11px; color: var(--text3);
+  font-family:'Cinzel',serif; letter-spacing:0.1em;
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+.btn-primary {
+  font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--bg);
+  background: var(--gold); border: none; cursor: pointer;
+  padding: 14px 48px; border-radius: 2px;
+  transition: all 0.2s; position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+  transform: translateX(-100%); transition: transform 0.4s;
+}
+.btn-primary:hover::before { transform: translateX(100%); }
+.btn-primary:hover { background: var(--gold2); transform: translateY(-2px); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  font-family:'Cinzel',serif; font-size: 11px; letter-spacing:0.15em;
+  text-transform: uppercase; color: var(--text2);
+  background: transparent; border: 1px solid var(--border2); cursor: pointer;
+  padding: 10px 24px; border-radius: 2px; transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--text2); color: var(--text); }
+
+.btn-end-turn {
+  font-family:'Cinzel',serif; font-size: 11px; letter-spacing:0.15em;
+  text-transform: uppercase; color: var(--text);
+  background: var(--surface2); border: 1px solid var(--border2); cursor: pointer;
+  padding: 10px 24px; border-radius: 2px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.btn-end-turn:hover { border-color: var(--gold-dim); color: var(--gold); }
+.btn-end-turn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* =====================================================
+   RUN SCREEN — LAYOUT
+   ===================================================== */
+#screen-run { padding: 0; position: relative; }
+.run-layout { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; }
+
+/* Botón "abandonar / volver al mapa" — sutil arriba a la derecha del combate */
+.btn-abandon-combat {
+  position: absolute;
+  top: 14px;
+  /* Apartado del log-tab que vive a la derecha — lo movemos un poco a la izquierda */
+  right: 50px;
+  z-index: 150;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text2);
+  background: rgba(30, 26, 21, 0.85);
+  border: 1px solid var(--border2);
+  padding: 6px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+.btn-abandon-combat:hover {
+  border-color: var(--red2);
+  color: var(--red2);
+  background: rgba(74, 16, 16, 0.4);
+}
+
+/* TOP BAR */
+.top-bar {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; padding: 12px 20px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.stats-left, .stats-right { display: flex; gap: 16px; align-items: center; }
+.stats-right { justify-content: flex-end; }
+.stat-block { display: flex; flex-direction: column; gap: 2px; min-width: 80px; }
+.stat-label {
+  font-family:'Cinzel',serif; font-size: 9px; letter-spacing:0.15em;
+  color: var(--text3); text-transform:uppercase;
+}
+.stat-bar-wrap { position: relative; height: 10px; border-radius: 1px; overflow: hidden; }
+.stat-bar { height: 100%; border-radius: 1px; transition: width 0.4s ease; }
+.stat-bar.hp { background: var(--hp-red); }
+.stat-bar.ithyr { background: var(--ithyr-blue); }
+.stat-bar-bg { position: absolute; inset: 0; background: var(--bg3); }
+.stat-num { font-size: 13px; font-weight: 600; color: var(--text); }
+.floor-info { text-align: center; }
+.floor-num {
+  font-family:'Cinzel',serif; font-size: 11px;
+  color: var(--gold-dim); letter-spacing:0.2em;
+}
+.floor-name { font-family:'Cinzel',serif; font-size: 15px; color: var(--gold); }
+.scarred-badge {
+  font-family:'Cinzel',serif; font-size: 9px; letter-spacing:0.1em;
+  color: var(--scarred); text-transform: uppercase; padding: 2px 8px;
+  border: 1px solid var(--scarred); border-radius: 2px;
+}
+
+/* =====================================================
+   ARENA
+   ===================================================== */
+.arena {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; position: relative; overflow: hidden;
+  /* Fondo: imagen de Vatnaborg con vignette oscura encima para mantener
+     legibilidad de cartas y números. Si la imagen no carga, queda el
+     gradiente original como fallback. */
+  background:
+    linear-gradient(180deg,
+      rgba(10,8,6,0.55) 0%,
+      rgba(10,8,6,0.35) 35%,
+      rgba(10,8,6,0.55) 100%),
+    radial-gradient(ellipse at 50% 50%,
+      rgba(0,0,0,0) 30%,
+      rgba(10,8,6,0.7) 100%),
+    url('../assets/backgrounds/vatnaborg_arena_bg.png') center/cover no-repeat,
+    radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.03) 0%, transparent 50%);
+}
+.arena-side {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 20px; position: relative;
+}
+.arena-divider {
+  position: absolute; left: 50%; top: 10%; bottom: 10%;
+  width: 1px; background: linear-gradient(180deg, transparent, var(--border), transparent);
+}
+
+/* ENEMY */
+.enemy-container { position: relative; }
+.enemy-art {
+  width: 200px; height: 240px; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.enemy-silhouette {
+  font-size: 120px; opacity: 0.7;
+  filter: drop-shadow(0 0 20px rgba(139,32,32,0.5));
+  animation: enemyFloat 3s ease-in-out infinite;
+}
+/* Cuando el enemigo tiene imagen real, ajustar para que llene el área */
+.enemy-silhouette.has-image {
+  font-size: 0;
+  opacity: 1;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.enemy-silhouette.has-image img {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 20px rgba(139,32,32,0.5));
+}
+/* Crossfade visual al cambiar de fase 1 → fase 2 */
+.enemy-silhouette.has-image img {
+  animation: enemyArtIn 0.5s ease;
+}
+@keyframes enemyArtIn {
+  from { opacity: 0; transform: scale(1.1); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes enemyFloat {
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-8px); }
+}
+.enemy-name {
+  font-family:'Cinzel',serif; font-size: 16px; color: var(--text);
+  text-align: center; margin-bottom: 4px;
+}
+.enemy-title {
+  font-style: italic; font-size: 13px; color: var(--text2);
+  text-align: center; margin-bottom: 12px;
+}
+.hp-bar-enemy {
+  width: 200px; height: 8px; background: var(--hp-bg);
+  border-radius: 1px; overflow: hidden;
+}
+.hp-fill-enemy {
+  height: 100%; background: var(--red2);
+  border-radius: 1px; transition: width 0.4s;
+}
+.enemy-hp-num { font-size: 13px; color: var(--text2); text-align: center; margin-top: 4px; }
+.enemy-intent {
+  font-family:'Cinzel',serif; font-size: 11px; letter-spacing:0.1em;
+  color: var(--red2); margin-top: 8px; text-align: center;
+  padding: 4px 12px; border: 1px solid var(--red-dim); border-radius: 2px;
+}
+.enemy-block-badge {
+  font-size: 12px; color: var(--blue2); margin-top: 4px; text-align: center;
+  display: none;
+}
+.enemy-block-badge.visible { display: block; }
+
+/* Overlay grande del escudo enemigo — encima de la imagen, visible siempre */
+.enemy-block-overlay {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(26, 58, 92, 0.92);
+  border: 2px solid #5aaaff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  display: none;
+  align-items: center; gap: 6px;
+  z-index: 20;
+  box-shadow: 0 0 14px rgba(90, 170, 255, 0.5);
+  animation: blockPulse 1.5s ease-in-out infinite;
+}
+.enemy-block-overlay.visible { display: flex; }
+.enemy-block-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+.enemy-block-num {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #5aaaff;
+  text-shadow: 0 0 6px rgba(90,170,255,0.6);
+}
+@keyframes blockPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(90,170,255,0.4); }
+  50%      { box-shadow: 0 0 20px rgba(90,170,255,0.8); }
+}
+
+@keyframes enemyHit {
+  0%{filter: drop-shadow(0 0 0px rgba(196,48,48,0))}
+  30%{filter: drop-shadow(0 0 20px rgba(196,48,48,1))}
+  100%{filter: drop-shadow(0 0 20px rgba(139,32,32,0.5))}
+}
+.enemy-silhouette.hit {
+  animation: enemyHit 0.4s ease, enemyFloat 3s ease-in-out infinite 0.4s;
+}
+
+/* PLAYER */
+.player-status {
+  width: 100%; max-width: 240px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.player-portrait {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-dim);
+  box-shadow: 0 0 30px rgba(201,168,76,0.2),
+              inset 0 0 20px rgba(0,0,0,0.4);
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: var(--bg2);
+  position: relative;
+}
+.player-portrait::after {
+  /* viñeta sutil para que combine con el tono dark fantasy */
+  content: ''; position: absolute; inset: 0;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+.player-portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.player-name {
+  font-family:'Cinzel',serif; font-size: 18px;
+  color: var(--gold); margin-bottom: 4px;
+  text-align: center;
+}
+.player-lore {
+  font-style:italic; font-size: 13px; color: var(--text2);
+  margin-bottom: 16px; line-height:1.5;
+  text-align: center;
+}
+.status-effects {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+}
+.effect-badge {
+  font-size: 11px; padding: 2px 8px; border-radius: 2px;
+  font-family:'Cinzel',serif; letter-spacing:0.05em;
+}
+.effect-block { background: var(--blue); color: var(--blue2); border: 1px solid var(--blue2); }
+.effect-str   { background: var(--teal); color: var(--teal2); border: 1px solid var(--teal2); }
+.effect-vuln  { background: var(--red-dim); color: var(--red2); border: 1px solid var(--red); }
+.effect-weak  { background: var(--purple); color: var(--purple2); border: 1px solid var(--purple2); }
+
+@keyframes playerHit {
+  0%,100%{opacity:1} 20%,60%{opacity:0.3}
+}
+.player-status.hit { animation: playerHit 0.5s ease; }
+
+/* COMBAT LOG (texto flotante) */
+.combat-log {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  font-style: italic; font-size: 13px; color: var(--gold-dim);
+  text-align: center; max-width: 400px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+  pointer-events: none;
+  animation: logFade 0.3s ease;
+}
+@keyframes logFade {
+  from{opacity:0; transform: translateX(-50%) translateY(4px)}
+  to  {opacity:1; transform: translateX(-50%) translateY(0)}
+}
+
+/* DAMAGE POPUP */
+.dmg-popup {
+  position: absolute; font-family:'Cinzel',serif;
+  font-size: 28px; font-weight: 700; pointer-events: none;
+  animation: popUp 0.8s ease forwards;
+  z-index: 100;
+}
+.dmg-popup.enemy  { color: var(--red2); top: 40%; left: 55%; }
+.dmg-popup.player { color: var(--hp-red); top: 40%; left: 10%; }
+.dmg-popup.block  { color: var(--blue2); }
+.dmg-popup.heal   { color: var(--teal2); }
+@keyframes popUp {
+  0%{opacity:1; transform: translateY(0) scale(1);}
+  60%{opacity:1; transform: translateY(-30px) scale(1.2);}
+  100%{opacity:0; transform: translateY(-60px) scale(0.8);}
+}
+
+/* =====================================================
+   HAND AREA
+   ===================================================== */
+.hand-area {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 16px 20px;
+}
+.hand-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.hand-label {
+  font-family:'Cinzel',serif; font-size: 10px; letter-spacing:0.2em;
+  color: var(--text3); text-transform:uppercase;
+}
+.deck-info { display: flex; gap: 16px; }
+.deck-count { font-size: 12px; color: var(--text3); font-family:'Cinzel',serif; }
+
+/* ÍTHYR (energía) */
+.ithyr-display { display: flex; align-items: center; gap: 6px; }
+.ithyr-crystal {
+  width: 32px; height: 32px;
+  background-image: url('../assets/ui/ithyr_crystal.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* Hide the unicode diamond character — la imagen lo reemplaza.
+     Lo dejamos en el HTML por accesibilidad/fallback si la imagen no carga. */
+  font-size: 0;
+  transition: opacity 0.25s ease, filter 0.25s ease, transform 0.2s ease;
+}
+.ithyr-crystal.full  {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(42,106,170,0.6));
+}
+.ithyr-crystal.empty {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+/* =====================================================
+   CARDS (in hand)
+   ===================================================== */
+.hand-cards {
+  display: flex; gap: 12px; justify-content: center;
+  flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px;
+}
+.card {
+  flex-shrink: 0; width: 110px; height: 160px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 4px; cursor: pointer; position: relative;
+  transition: all 0.2s; display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.card:hover {
+  transform: translateY(-20px) scale(1.05);
+  border-color: var(--gold);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(201,168,76,0.15);
+  z-index: 10;
+}
+.card.unplayable { opacity: 0.4; cursor: not-allowed; }
+.card.unplayable:hover { transform: none; border-color: var(--border2); box-shadow: none; }
+.card.playing { animation: cardPlay 0.3s ease forwards; }
+@keyframes cardPlay {
+  0%{transform: translateY(-20px) scale(1.05);}
+  50%{transform: translateY(-80px) scale(0.9); opacity:0.5;}
+  100%{transform: translateY(-200px) scale(0.7); opacity:0;}
+}
+
+.card-type-bar { height: 3px; width: 100%; }
+.card-type-bar.attack { background: var(--red2); }
+.card-type-bar.skill  { background: var(--blue2); }
+.card-type-bar.power  { background: var(--teal2); }
+.card-type-bar.memory { background: var(--gold); }
+
+.card-cost {
+  position: absolute; top: 6px; left: 6px;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family:'Cinzel',serif; font-size: 12px; font-weight: 700;
+  background: var(--ithyr-blue); color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.card-cost.free { background: var(--teal); color: var(--teal2); }
+.card-art {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 36px; padding: 8px 4px 0;
+}
+/* Cuando hay ilustración real (no emoji), llenar el área completa. */
+.card-art.has-image {
+  padding: 0;
+  font-size: 0;
+  overflow: hidden;
+}
+.card-art.has-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.card-name {
+  font-family:'Cinzel',serif; font-size: 10px; text-align: center;
+  color: var(--text); padding: 2px 6px; letter-spacing: 0.05em;
+}
+.card-divider { height: 1px; background: var(--border); margin: 2px 6px; }
+.card-desc {
+  font-size: 10px; text-align: center; color: var(--text2);
+  padding: 2px 6px 6px; line-height: 1.3; font-style: italic;
+}
+.card-type-label {
+  font-family:'Cinzel',serif; font-size: 8px; letter-spacing:0.1em;
+  color: var(--text3); text-align: center; padding-bottom: 4px;
+  text-transform: uppercase;
+}
+
+/* =====================================================
+   COMBAT RESULT SCREEN
+   ===================================================== */
+#screen-result { align-items: center; justify-content: center; text-align: center; }
+.result-title {
+  font-family:'Cinzel',serif; font-size: 48px; font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-title.victory { color: var(--gold2); }
+.result-title.defeat  { color: var(--red2); }
+.result-flavor { font-style: italic; font-size: 20px; color: var(--text2); margin-bottom: 8px; }
+.result-sub { font-size: 14px; color: var(--text3); margin-bottom: 32px; }
+.scar-reveal {
+  background: var(--surface); border: 1px solid var(--scarred);
+  border-radius: 4px; padding: 20px 32px; margin-bottom: 32px;
+  max-width: 400px;
+}
+.scar-label {
+  font-family:'Cinzel',serif; font-size: 10px; letter-spacing:0.2em;
+  color: var(--text3); margin-bottom: 8px;
+}
+.scar-name {
+  font-family:'Cinzel',serif; font-size: 18px;
+  color: var(--scarred); margin-bottom: 6px;
+}
+.scar-desc { font-size: 14px; color: var(--text2); font-style: italic; }
+.result-btns { display: flex; gap: 12px; justify-content: center; }
+
+/* =====================================================
+   REWARD SCREEN
+   ===================================================== */
+#screen-reward {
+  align-items: center; justify-content: center; text-align: center; padding: 40px;
+}
+.reward-title { font-family:'Cinzel',serif; font-size: 28px; color: var(--gold); margin-bottom: 8px; }
+.reward-sub { font-style: italic; color: var(--text2); margin-bottom: 32px; font-size: 15px; }
+.reward-cards {
+  display: flex; gap: 20px; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 32px;
+}
+.reward-card-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.reward-card-wrap .card { cursor: pointer; }
+.reward-card-wrap .card:hover { transform: translateY(-10px) scale(1.05); }
+.reward-card-hint {
+  font-size: 12px; color: var(--text3);
+  font-family:'Cinzel',serif; letter-spacing:0.1em;
+}
+
+/* =====================================================
+   TOOLTIP
+   ===================================================== */
+.tooltip {
+  position: fixed; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 4px; padding: 10px 14px; font-size: 13px; color: var(--text2);
+  font-style: italic; max-width: 220px; line-height: 1.5;
+  pointer-events: none; z-index: 1000; display: none;
+}
+
+/* =====================================================
+   COMBAT LOG PANEL (lateral)
+   ===================================================== */
+.log-panel {
+  position: fixed; top: 0; right: 0; height: 100vh;
+  width: 280px; z-index: 200;
+  transform: translateX(calc(100% - 32px));
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+  display: flex; flex-direction: row; pointer-events: none;
+}
+.log-panel.open { transform: translateX(0); }
+.log-tab {
+  writing-mode: vertical-rl; text-orientation: mixed;
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.2em;
+  color: var(--gold-dim); text-transform: uppercase;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-right: none; padding: 14px 8px;
+  cursor: pointer; pointer-events: all;
+  align-self: center; border-radius: 4px 0 0 4px;
+  transition: color 0.15s, background 0.15s;
+  user-select: none; width: 32px; text-align: center;
+}
+.log-tab:hover { color: var(--gold); background: var(--surface); }
+.log-tab .log-badge {
+  writing-mode: horizontal-tb;
+  background: var(--red2); color: #fff;
+  font-size: 9px; border-radius: 8px;
+  padding: 1px 5px; margin-bottom: 6px;
+  display: none;
+}
+.log-tab .log-badge.visible { display: block; }
+.log-body {
+  flex: 1; background: var(--bg2);
+  border-left: 1px solid var(--border2);
+  display: flex; flex-direction: column;
+  pointer-events: all; overflow: hidden;
+}
+.log-header {
+  padding: 12px 14px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.log-title {
+  font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.15em;
+  color:var(--gold-dim); text-transform:uppercase;
+}
+.log-clear {
+  font-size:10px; color:var(--text3); cursor:pointer;
+  font-family:'Cinzel',serif; letter-spacing:0.05em;
+}
+.log-clear:hover { color:var(--text2); }
+.log-entries { flex: 1; overflow-y: auto; padding: 8px 0; }
+.log-entry {
+  padding: 8px 14px; border-bottom: 1px solid rgba(58,48,32,0.4);
+  font-size: 12px; line-height: 1.5;
+  animation: logEntryIn 0.2s ease;
+}
+@keyframes logEntryIn {
+  from{ opacity:0; transform:translateX(8px); }
+  to  { opacity:1; transform:translateX(0); }
+}
+.log-entry:last-child { border-bottom: none; }
+.log-turn-marker {
+  padding: 6px 14px; font-family:'Cinzel',serif;
+  font-size: 9px; letter-spacing:0.15em; color:var(--text3);
+  text-transform:uppercase; background: var(--bg3);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin: 4px 0;
+}
+.log-type-card    { color: var(--gold); }
+.log-type-attack  { color: var(--red2); }
+.log-type-skill   { color: #5aaaff; }
+.log-type-damage  { color: #ff6060; }
+.log-type-block   { color: #5aaaff; }
+.log-type-enemy   { color: #c07040; }
+.log-type-curse   { color: #8a3a3a; }
+.log-type-system  { color: var(--text3); font-style: italic; }
+.log-math {
+  font-size: 11px; color: var(--text3); margin-top: 2px;
+  font-style: italic;
+}
+.log-math span { color: var(--text2); }
+
+/* =====================================================
+   DECK EDITOR
+   ===================================================== */
+.filter-btn {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text3);
+  background:var(--surface); border:1px solid var(--border2);
+  padding:5px 12px; border-radius:2px; cursor:pointer;
+  transition:all 0.15s;
+}
+.filter-btn:hover  { color:var(--text); border-color:var(--gold-dim); }
+.filter-btn.active { color:var(--gold); border-color:var(--gold); background:var(--surface2); }
+
+.pool-card {
+  width:90px; height:130px; background:var(--surface);
+  border:1px solid var(--border2); border-radius:4px;
+  cursor:pointer; display:flex; flex-direction:column;
+  transition:all 0.15s; position:relative; overflow:hidden;
+  flex-shrink:0;
+}
+.pool-card:hover { border-color:var(--gold); transform:translateY(-4px); }
+.pool-card .card-type-bar { height:3px; width:100%; }
+.pool-card .card-cost {
+  position:absolute; top:4px; left:4px;
+  width:18px; height:18px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Cinzel',serif; font-size:10px; font-weight:700;
+  background:var(--ithyr-blue); color:#fff;
+}
+.pool-card .card-art {
+  flex:1; display:flex; align-items:center; justify-content:center; font-size:28px;
+}
+.pool-card .card-name {
+  font-family:'Cinzel',serif; font-size:8px; text-align:center;
+  color:var(--text); padding:2px 4px; letter-spacing:0.03em;
+}
+.pool-card .card-count-badge {
+  position:absolute; top:4px; right:4px;
+  background:var(--gold); color:var(--bg);
+  font-family:'Cinzel',serif; font-size:9px; font-weight:700;
+  border-radius:8px; padding:1px 5px; display:none;
+}
+.pool-card.in-deck .card-count-badge { display:block; }
+
+.deck-list-item {
+  display:flex; align-items:center; gap:8px; padding:6px 8px;
+  border-bottom:1px solid var(--border); cursor:pointer;
+  transition:background 0.1s; font-size:12px;
+}
+.deck-list-item:last-child { border-bottom:none; }
+.deck-list-item:hover { background:var(--red-dim); }
+.deck-list-item .dli-art    { font-size:16px; width:20px; text-align:center; }
+.deck-list-item .dli-name   { flex:1; font-family:'Cinzel',serif; color:var(--text); font-size:11px; }
+.deck-list-item .dli-type   { font-size:10px; color:var(--text3); }
+.deck-list-item .dli-remove { color:var(--red2); font-size:14px; opacity:0.5; }
+.deck-list-item:hover .dli-remove { opacity:1; }
+
+#editor-deck-count.ok   { color:var(--teal2); }
+#editor-deck-count.warn { color:var(--gold); }
+#editor-deck-count.bad  { color:var(--red2); }
+
+/* =====================================================
+   CARD PREVIEW MODAL
+   Vista grande de una carta del editor para inspeccionar.
+   ===================================================== */
+.card-preview-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  cursor: pointer; /* hint visual: click fuera para cerrar */
+  animation: fadeIn 0.2s ease;
+}
+.card-preview-overlay.visible { display: flex; }
+
+.card-preview-content {
+  background: var(--bg2);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 28px;
+  max-width: 360px; width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px;
+  cursor: default;
+  box-shadow: 0 12px 60px rgba(0,0,0,0.7), 0 0 40px rgba(201,168,76,0.1);
+  animation: previewIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes previewIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* La carta grande dentro del modal — mismo "esqueleto" que .card pero ~2.5x */
+.card-preview-card {
+  width: 240px; min-height: 360px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  position: relative;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.card-preview-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.card-preview-card .card-type-bar { height: 5px; }
+.card-preview-card .card-cost {
+  position: absolute; top: 10px; left: 10px;
+  width: 36px; height: 36px;
+  font-size: 18px;
+}
+.card-preview-card .card-art {
+  font-size: 80px;
+  padding: 16px 8px 0;
+  min-height: 180px;
+}
+/* Si la carta tiene imagen real, ocupa toda el área del arte (más alto) */
+.card-preview-card .card-art.has-image {
+  min-height: 200px;
+}
+
+.card-preview-name {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  text-align: center;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  padding: 6px 12px 2px;
+}
+.card-preview-type {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  text-align: center;
+  padding-bottom: 8px;
+}
+.card-preview-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2), transparent);
+  margin: 0 12px;
+}
+.card-preview-desc {
+  font-size: 14px;
+  text-align: center;
+  color: var(--text);
+  padding: 12px 16px 4px;
+  line-height: 1.4;
+}
+.card-preview-lore {
+  font-size: 12px;
+  text-align: center;
+  color: var(--text2);
+  font-style: italic;
+  padding: 4px 16px 14px;
+  line-height: 1.5;
+}
+
+.card-preview-meta {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.card-preview-actions {
+  display: flex; gap: 12px; width: 100%;
+  justify-content: space-between;
+}
+.card-preview-actions .btn-primary { flex: 1; padding: 12px 20px; font-size: 11px; }
+.card-preview-actions .btn-secondary { padding: 12px 20px; font-size: 11px; }
+
+/* =====================================================
+   MAP SCREEN — Mapa de Fornheim
+   ===================================================== */
+#screen-map {
+  background: var(--bg);
+  padding: 0;
+}
+
+/* HUD superior con stats del run */
+.map-hud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 14px 24px;
+  background: linear-gradient(180deg, var(--bg2) 0%, rgba(16,14,11,0.85) 100%);
+  border-bottom: 1px solid var(--border);
+  z-index: 10;
+}
+.map-hud-left { display: flex; gap: 24px; align-items: center; }
+.map-hud-right { display: flex; justify-content: flex-end; }
+.map-hud-stat {
+  display: flex; flex-direction: column;
+  align-items: flex-start;
+  min-width: 70px;
+}
+.map-hud-label {
+  font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.2em;
+  color: var(--text3); text-transform: uppercase;
+}
+.map-hud-value {
+  font-family:'Cinzel',serif; font-size:14px; color: var(--gold);
+  margin-top: 2px;
+}
+.map-hud-center { text-align: center; }
+.map-hud-title {
+  font-family:'Cinzel',serif; font-size: 18px;
+  color: var(--gold2); letter-spacing: 0.15em;
+}
+.map-hud-subtitle {
+  font-style: italic; font-size: 12px;
+  color: var(--text2); margin-top: 2px;
+}
+
+/* Canvas — contiene el mapa SVG estilizado */
+.map-canvas-wrap {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  overflow: auto;
+  background:
+    radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 50%),
+    var(--bg);
+}
+
+/* ─── Mapa SVG estilizado (Opción B) ─────────────────── *
+ *  Un único SVG con todas las capas. Las coords son en %
+ *  del viewBox (0-100 × 0-130). Se escala manteniendo
+ *  proporción y centra dentro del wrapper.
+ * ──────────────────────────────────────────────────────── */
+.map-svg {
+  max-height: calc(100vh - 130px);
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  box-shadow: 0 0 60px rgba(0,0,0,0.7),
+              inset 0 0 100px rgba(40,30,15,0.4);
+  background: #d8c598;
+  /* aspect ratio según el viewBox 100x130 = portrait */
+  aspect-ratio: 100 / 130;
+}
+
+/* Decorativos: montañas y bosques no son clickables */
+.map-mountains, .map-forests {
+  pointer-events: none;
+}
+
+/* Nodos del SVG */
+.svg-node {
+  transition: transform 0.2s ease, filter 0.2s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.svg-node-base {
+  fill: rgba(255, 245, 220, 0.95);
+  stroke: #5a4a30;
+  stroke-width: 0.4;
+  transition: all 0.2s ease;
+}
+.svg-node-icon {
+  pointer-events: none;
+  user-select: none;
+}
+.svg-node-label {
+  font-family: 'Cinzel', serif;
+  fill: #2a1f10;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  user-select: none;
+  paint-order: stroke;
+  stroke: rgba(255, 245, 220, 0.9);
+  stroke-width: 0.4;
+  stroke-linejoin: round;
+}
+
+/* Estados */
+.svg-node-locked .svg-node-base {
+  fill: #b0a079;
+  stroke: #6a5a40;
+  opacity: 0.5;
+}
+.svg-node-locked .svg-node-icon {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+.svg-node-locked .svg-node-label {
+  fill: #6a5a40;
+  opacity: 0.5;
+}
+
+.svg-node-available .svg-node-base {
+  fill: #fff5d8;
+  stroke: var(--gold);
+  stroke-width: 0.6;
+  animation: svgNodePulse 2.2s ease-in-out infinite;
+}
+.svg-node-available:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 4px rgba(201,168,76,0.7));
+}
+
+.svg-node-current .svg-node-base {
+  fill: #ffefb0;
+  stroke: var(--gold2);
+  stroke-width: 0.8;
+  filter: drop-shadow(0 0 3px rgba(232,201,106,0.8));
+}
+
+.svg-node-completed .svg-node-base {
+  fill: #a8c0a0;
+  stroke: var(--teal2);
+  opacity: 0.85;
+}
+.svg-node-completed:hover {
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+/* Boss — más grande y rojo */
+.svg-node-boss .svg-node-base {
+  fill: #f0c0b0;
+  stroke: var(--red2);
+  stroke-width: 0.6;
+}
+.svg-node-boss.svg-node-available .svg-node-base {
+  animation: svgBossPulse 1.6s ease-in-out infinite;
+}
+
+/* Variantes por tipo */
+.svg-node-shop .svg-node-base { stroke: var(--gold); }
+.svg-node-rest .svg-node-base { stroke: var(--teal2); }
+.svg-node-elite .svg-node-base { stroke: #6a3a8a; }
+.svg-node-crossing .svg-node-base { stroke: var(--blue2); }
+.svg-node-ruins .svg-node-base { stroke: #8a6a3a; }
+.svg-node-event .svg-node-base { stroke: var(--blue2); }
+
+@keyframes svgNodePulse {
+  0%, 100% { filter: drop-shadow(0 0 1.5px rgba(201,168,76,0.4)); }
+  50%      { filter: drop-shadow(0 0 4px rgba(201,168,76,0.85)); }
+}
+@keyframes svgBossPulse {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(196,48,48,0.5)); }
+  50%      { filter: drop-shadow(0 0 6px rgba(196,48,48,0.95)); }
+}
+
+/* Líneas de ruta — re-estilo para SVG nativo (sin vector-effect:non-scaling porque ya viaja en el mismo SVG) */
+.map-svg .map-line {
+  fill: none;
+  stroke-linecap: round;
+}
+.map-svg .map-line.locked {
+  stroke: rgba(90, 70, 40, 0.35);
+  stroke-width: 0.4;
+  stroke-dasharray: 1 1.2;
+}
+.map-svg .map-line.open {
+  stroke: rgba(180, 50, 50, 0.75);
+  stroke-width: 0.5;
+  stroke-dasharray: 1.5 1;
+  animation: svgLineDash 18s linear infinite;
+}
+.map-svg .map-line.walked {
+  stroke: rgba(201, 168, 76, 0.85);
+  stroke-width: 0.6;
+  stroke-dasharray: 2 1;
+}
+@keyframes svgLineDash {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -40; }
+}
+
+/* Estilos viejos del HTML-overlay (los dejo por compatibilidad pero ya no se usan) */
+.map-canvas {
+  /* Inline-block para que el wrapper se ajuste al tamaño REAL del <img>
+     una vez que carga. Position relative para que los nodos absolutos se
+     posicionen contra esta caja exacta. */
+  position: relative;
+  display: inline-block;
+  font-size: 0; /* evita whitespace antes del img */
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  box-shadow: 0 0 60px rgba(0,0,0,0.6),
+              inset 0 0 80px rgba(0,0,0,0.3);
+  overflow: hidden;
+  max-width: 100%;
+  max-height: calc(100vh - 120px);
+}
+.map-image {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 124px); /* -4 por borde */
+  width: auto;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.map-nodes-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* clicks pasan a través por defecto */
+}
+.map-nodes-layer .map-node {
+  pointer-events: all; /* pero los nodos sí reciben click */
+}
+
+/* ─── Líneas SVG entre nodos ─────────────────────────── *
+ *  El SVG cubre todo el canvas con viewBox 0-100, así las
+ *  coordenadas son directamente porcentajes. vector-effect
+ *  mantiene grosor constante de stroke aunque se estire.
+ * ──────────────────────────────────────────────────────── */
+.map-connections {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.map-line {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  fill: none;
+}
+.map-line.locked {
+  stroke: rgba(80, 70, 50, 0.35);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 4;
+}
+.map-line.open {
+  stroke: rgba(196, 48, 48, 0.65);
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+  animation: lineDash 18s linear infinite;
+}
+.map-line.walked {
+  stroke: rgba(201, 168, 76, 0.7);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 3;
+}
+@keyframes lineDash {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -100; }
+}
+
+/* =====================================================
+   RUINS SCREEN — Encontrar reliquias
+   ===================================================== */
+#screen-ruins.active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(160,120,60,0.08) 0%, transparent 60%),
+    var(--bg);
+  padding: 40px 20px;
+}
+.ruins-content {
+  max-width: 720px;
+  width: 100%;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: fadeIn 0.5s ease;
+}
+.ruins-icon {
+  font-size: 64px;
+  line-height: 1;
+  filter: drop-shadow(0 0 18px rgba(160,120,60,0.5));
+}
+.ruins-title {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  color: var(--gold2);
+  letter-spacing: 0.12em;
+}
+.ruins-flavor {
+  font-style: italic;
+  color: var(--text2);
+  font-size: 15px;
+  text-align: center;
+  max-width: 540px;
+  line-height: 1.7;
+}
+.ruins-options {
+  display: flex; gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 16px 0;
+}
+.ruins-relic-pick {
+  width: 200px;
+  background: var(--surface);
+  border: 2px solid #8a6a3a;
+  border-radius: 6px;
+  padding: 24px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  color: inherit;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.ruins-relic-pick:hover {
+  border-color: var(--gold);
+  background: var(--surface2);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+.ruins-relic-icon {
+  font-size: 56px;
+  line-height: 1;
+  filter: drop-shadow(0 0 12px rgba(232,201,106,0.4));
+}
+.ruins-relic-name {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+.ruins-relic-desc {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.4;
+  font-style: italic;
+}
+.ruins-relic-rarity {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+.ruins-empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--text3);
+  font-style: italic;
+}
+
+/* =====================================================
+   EVENT SCREEN — Decisiones narrativas
+   ===================================================== */
+#screen-event.active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(74,42,138,0.08) 0%, transparent 60%),
+    var(--bg);
+}
+.event-content {
+  max-width: 640px;
+  width: 100%;
+  padding: 40px 28px;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  animation: fadeIn 0.5s ease;
+}
+.event-icon {
+  font-size: 64px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(74,42,138,0.4));
+}
+.event-title {
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  color: var(--gold2);
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+.event-description {
+  font-style: italic;
+  color: var(--text);
+  font-size: 16px;
+  text-align: center;
+  max-width: 540px;
+  line-height: 1.7;
+  padding: 0 8px;
+}
+.event-options {
+  display: flex; flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  width: 100%;
+  max-width: 480px;
+}
+.event-option {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+  display: flex; flex-direction: column;
+  gap: 6px;
+}
+.event-option:hover {
+  border-color: var(--gold);
+  background: var(--surface2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.event-option-label {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+.event-option-desc {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text2);
+  line-height: 1.4;
+}
+
+/* =====================================================
+   REST SCREEN — Aldea / fogata
+   ===================================================== */
+#screen-rest.active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(255,140,40,0.08) 0%, transparent 60%),
+    var(--bg);
+}
+.rest-content {
+  max-width: 520px;
+  width: 100%;
+  padding: 40px 24px;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  animation: fadeIn 0.5s ease;
+}
+.rest-icon {
+  font-size: 96px;
+  line-height: 1;
+  filter: drop-shadow(0 0 30px rgba(255,140,40,0.4));
+  animation: restFire 2s ease-in-out infinite;
+}
+@keyframes restFire {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%      { transform: scale(1.05) rotate(2deg); }
+}
+.rest-title {
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
+  color: var(--gold2);
+  letter-spacing: 0.15em;
+}
+.rest-flavor {
+  font-style: italic;
+  color: var(--text2);
+  font-size: 16px;
+  text-align: center;
+  max-width: 420px;
+  line-height: 1.6;
+}
+.rest-options {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.rest-option {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  color: inherit;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  min-width: 180px;
+}
+.rest-option:hover {
+  border-color: var(--gold);
+  background: var(--surface2);
+  transform: translateY(-2px);
+}
+.rest-option-icon { font-size: 32px; line-height: 1; }
+.rest-option-name {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.rest-option-desc {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text2);
+  text-align: center;
+}
+
+/* Nodos del mapa — botones absolutamente posicionados */
+.map-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: var(--surface);
+  border: 2px solid var(--border2);
+  border-radius: 50%;
+  width: 56px; height: 56px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  z-index: 5;
+}
+.map-node-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+.map-node-label {
+  position: absolute;
+  top: 100%;
+  margin-top: 6px;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  text-shadow:
+    -1px -1px 0 var(--bg),
+     1px -1px 0 var(--bg),
+    -1px  1px 0 var(--bg),
+     1px  1px 0 var(--bg),
+     0 0 8px rgba(0,0,0,0.8);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Estados de los nodos */
+.map-node-locked {
+  background: var(--bg3);
+  border-color: var(--border);
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(0.8);
+}
+.map-node-locked .map-node-label { color: var(--text3); }
+
+.map-node-available {
+  background: var(--surface);
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 16px rgba(201,168,76,0.3);
+  animation: nodePulse 2s ease-in-out infinite;
+}
+.map-node-available:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  border-color: var(--gold);
+  box-shadow: 0 0 28px rgba(201,168,76,0.6);
+}
+@keyframes nodePulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(201,168,76,0.3); }
+  50%      { box-shadow: 0 0 28px rgba(201,168,76,0.6); }
+}
+
+.map-node-current {
+  background: var(--surface2);
+  border-color: var(--gold2);
+  box-shadow: 0 0 32px rgba(201,168,76,0.7);
+  z-index: 6;
+}
+.map-node-current .map-node-icon::after {
+  /* Marker "estás aquí" */
+  content: '◆';
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--gold);
+  text-shadow: 0 0 6px var(--gold);
+  animation: hereDrop 1.4s ease-in-out infinite;
+}
+@keyframes hereDrop {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(-3px); }
+}
+
+.map-node-completed {
+  background: var(--bg3);
+  border-color: var(--teal2);
+  opacity: 0.7;
+}
+.map-node-completed:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  opacity: 1;
+}
+.map-node-completed .map-node-icon {
+  filter: grayscale(0.5);
+}
+
+/* Variaciones por TIPO de nodo */
+.map-node-boss {
+  width: 72px; height: 72px;
+  border-color: var(--red2);
+  background: var(--red-dim);
+}
+.map-node-boss .map-node-icon { font-size: 30px; }
+.map-node-boss.map-node-available {
+  border-color: var(--red2);
+  box-shadow: 0 0 24px rgba(196,48,48,0.5);
+  animation: bossPulse 1.5s ease-in-out infinite;
+}
+@keyframes bossPulse {
+  0%, 100% { box-shadow: 0 0 24px rgba(196,48,48,0.5); }
+  50%      { box-shadow: 0 0 40px rgba(196,48,48,0.9); }
+}
+.map-node-rest {
+  border-color: var(--teal2);
+}
+.map-node-rest.map-node-available {
+  box-shadow: 0 0 16px rgba(42,122,90,0.4);
+}
+.map-node-elite {
+  border-color: var(--purple2);
+}
+.map-node-elite.map-node-available {
+  box-shadow: 0 0 16px rgba(74,42,138,0.5);
+}
+.map-node-event {
+  border-color: var(--blue2);
+}
+.map-node-event.map-node-available {
+  box-shadow: 0 0 16px rgba(42,90,140,0.4);
+}
+.map-node-shop {
+  border-color: var(--gold);
+  background: var(--surface2);
+}
+.map-node-shop.map-node-available {
+  box-shadow: 0 0 18px rgba(232,201,106,0.6);
+  animation: shopPulse 2.5s ease-in-out infinite;
+}
+@keyframes shopPulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(232,201,106,0.5); }
+  50%      { box-shadow: 0 0 28px rgba(232,201,106,0.85); }
+}
+
+/* Cruces de océano — azul marino */
+.map-node-crossing {
+  border-color: var(--blue2);
+  background: var(--blue);
+}
+.map-node-crossing.map-node-available {
+  box-shadow: 0 0 18px rgba(90,170,255,0.5);
+}
+
+/* Ruinas — bronce apagado, vibe arqueológica */
+.map-node-ruins {
+  border-color: #8a6a3a;
+  background: var(--surface);
+}
+.map-node-ruins.map-node-available {
+  box-shadow: 0 0 18px rgba(160,120,60,0.5);
+  animation: ruinsPulse 3s ease-in-out infinite;
+}
+@keyframes ruinsPulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(160,120,60,0.4); }
+  50%      { box-shadow: 0 0 24px rgba(160,120,60,0.7); }
+}
+
+/* ─── HUD: Oro y Reliquias ───────────────────────────── */
+.map-hud-relics {
+  display: flex; gap: 6px; align-items: center;
+  margin-left: auto;
+}
+.combat-relics-wrap {
+  display: flex; gap: 4px; align-items: center;
+  margin-left: 8px;
+}
+.relic-icon {
+  width: 32px; height: 32px;
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: help;
+  transition: transform 0.15s;
+}
+.relic-icon:hover {
+  transform: scale(1.15);
+  border-color: var(--gold);
+}
+.relic-emoji { font-size: 18px; line-height: 1; }
+.relic-icon img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* =====================================================
+   SHOP SCREEN — Mercader Errante
+   ===================================================== */
+#screen-shop.active {
+  display: flex !important;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(232,201,106,0.06) 0%, transparent 60%),
+    var(--bg);
+  overflow-y: auto;
+}
+.shop-content {
+  max-width: 880px;
+  width: 100%;
+  display: flex; flex-direction: column;
+  gap: 24px;
+  animation: fadeIn 0.5s ease;
+}
+.shop-header {
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.shop-icon {
+  font-size: 64px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(232,201,106,0.5));
+}
+.shop-title {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  color: var(--gold2);
+  letter-spacing: 0.15em;
+}
+.shop-flavor {
+  font-style: italic;
+  color: var(--text2);
+  font-size: 14px;
+  max-width: 540px;
+  line-height: 1.6;
+}
+.shop-gold-display {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  color: var(--gold);
+  margin-top: 8px;
+  padding: 8px 24px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 2px;
+  background: var(--surface);
+}
+
+.shop-section {
+  display: flex; flex-direction: column;
+  gap: 12px;
+}
+.shop-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.shop-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.shop-item {
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.shop-buy-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.shop-buy-btn:hover:not(:disabled) {
+  background: var(--gold2);
+  transform: translateY(-1px);
+}
+.shop-buy-btn:disabled,
+.shop-buy-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background: var(--surface);
+  color: var(--text3);
+  border: 1px solid var(--border2);
+}
+
+/* Reliquias en la tienda */
+.shop-relic-card {
+  width: 180px; min-height: 200px;
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  padding: 16px 12px;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.shop-relic-card.unaffordable { opacity: 0.5; filter: grayscale(0.6); }
+.shop-relic-icon {
+  font-size: 48px;
+  line-height: 1;
+  filter: drop-shadow(0 0 12px rgba(232,201,106,0.4));
+}
+.shop-relic-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+.shop-relic-desc {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.4;
+  font-style: italic;
+}
+.shop-relic-rarity {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.shop-services {
+  display: flex; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+}
+.shop-service-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 12px 20px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.shop-service-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: var(--surface2);
+}
+.shop-service-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.shop-actions {
+  display: flex; justify-content: center;
+  margin-top: 12px;
+}
+
+/* Selector de carta para eliminar/vender — modal interno */
+.shop-card-selector {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 1100;
+  padding: 20px;
+}
+.shop-card-selector.visible { display: flex; }
+.shop-card-selector-content {
+  background: var(--bg2);
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  padding: 24px;
+  max-width: 440px; width: 100%;
+  display: flex; flex-direction: column;
+  gap: 16px;
+}
+.shop-card-selector-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-align: center;
+}
+.shop-card-selector-list {
+  display: flex; flex-direction: column;
+  gap: 6px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.shop-deck-pick {
+  display: flex; align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text);
+  transition: all 0.15s;
+}
+.shop-deck-pick:hover {
+  border-color: var(--gold);
+  background: var(--surface2);
+}
+.shop-pick-art { font-size: 20px; width: 24px; text-align: center; }
+.shop-pick-name { flex: 1; font-family: 'Cinzel', serif; font-size: 12px; text-align: left; }
+.shop-pick-count { font-size: 11px; color: var(--gold-dim); }
+.shop-pick-type { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* =====================================================
+   SCROLLBAR
+   ===================================================== */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }

@@ -1,0 +1,21 @@
+PERSONAJE: Konr Valdmaren — Protagonista
+ARCHIVO DESTINO: konr-assets/ui/konr_portrait.png
+
+=== PROMPT POSITIVO ===
+dark fantasy character portrait, a tall brooding warrior in his mid-thirties,
+worn dark leather and chainmail armor, symbol of a broken seal etched on 
+breastplate, short dark hair, intense haunted grey eyes, scar on right palm 
+glowing faintly with eldritch light, stoic expression hiding deep grief,
+northern medieval aesthetic, cold dramatic lighting, painterly style,
+half-body portrait, no text, no UI, concept art quality
+
+=== PROMPT NEGATIVO ===
+text, watermark, UI, colorful, cartoonish, anime, modern, magic robes,
+staff, wand, happy, smiling, elf ears
+
+=== SETTINGS ===
+Modelo: Realistic Vision v5 o DreamShaper XL  
+Steps: 40
+CFG Scale: 7
+Sampler: DPM++ 2M Karras
+Tamaño: 512x768

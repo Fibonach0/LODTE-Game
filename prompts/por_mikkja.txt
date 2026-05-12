@@ -1,0 +1,22 @@
+CARTA: Por Mikkja
+ARCHIVO DESTINO: konr-assets/cards/por_mikkja_art.png
+
+=== PROMPT POSITIVO ===
+dark fantasy trading card art, a scarred warrior knight kneeling in ruins,
+holding a dim candlelight in his gauntleted hand, expression of grief and
+determination, broken stone archway in background, embers floating upward,
+muted palette of deep crimson and ash grey, cold moonlight filtering through
+cracks, painterly style, dramatic chiaroscuro lighting, no text, no UI,
+centered composition, portrait orientation, highly detailed, concept art quality
+
+=== PROMPT NEGATIVO ===
+text, watermark, UI, frame, border, bright colors, cartoonish, anime,
+modern clothing, guns, happy expression, daytime, fantasy elf, magic sparkles
+
+=== SETTINGS ===
+Modelo: Realistic Vision v5 o DreamShaper XL
+Steps: 35
+CFG Scale: 7
+Sampler: DPM++ 2M Karras
+Tamaño: 512x768 (portrait 2:3)
+Seed: cualquiera (guardar el que quede bien)

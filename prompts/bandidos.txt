@@ -1,0 +1,42 @@
+ENEMIGO: Bandidos del Camino — "Los que esperan en los pasos"
+ARCHIVO DESTINO: assets/enemies/bandidos_art.png
+
+Encuentro grupal — tres figuras humanas. Es una pelea de "supervivencia
+miserable", no una batalla épica. Bandidos, no soldados. Su presencia
+en Kuthul (paso de montaña) y en Myrkviðr (bosque oscuro) refuerza el
+peregrinaje difícil de Konr.
+
+=== PROMPT POSITIVO ===
+dark fantasy concept art, three nordic bandits standing on a misty
+mountain pass, hooded figures in tattered leather and patched chainmail,
+faces half hidden by hoods and cloth wraps, holding rusted knives and a
+broken short sword, scarred and starving, breath visible in cold air,
+crumbling stone cairns and broken sigils in background, dim grey daylight
+filtering through clouds, painterly atmospheric perspective, deep blue-grey
+palette with embers of crimson on a smoldering torch, chiaroscuro lighting,
+no text, no UI, group composition, three-quarter view, portrait orientation,
+highly detailed clothing folds and rust, concept art quality
+
+=== PROMPT NEGATIVO ===
+text, watermark, UI, frame, border, modern, cartoonish, anime, samurai,
+ninja, bright colors, sunny daylight, fantasy elf ears, magic sparkles,
+clean armor, polished weapons, smiling, friendly, daytime market
+
+=== SETTINGS ===
+Modelo: Realistic Vision v5 o DreamShaper XL
+Steps: 35
+CFG Scale: 7
+Sampler: DPM++ 2M Karras
+Tamaño: 600x800 (portrait)
+Seed: cualquiera (guardar el que mejor capture la pose grupal y la mirada)
+
+=== NOTAS DE USO ===
+Slot: enemies.js → ENEMIES.bandidos.image
+Una vez generado el PNG, agrego una línea:
+    image: 'assets/enemies/bandidos_art.png',
+
+Variantes opcionales (mismo prompt, distinto seed):
+- "bandidos en bosque" para Myrkviðr (cambiar "mountain pass" por
+  "deep nordic forest at dusk, dark trees", agregar "lanterns swinging")
+- "una sola figura" para si más adelante hago un mini-boss bandido
+  ("a single masked highwayman, leader of the band")

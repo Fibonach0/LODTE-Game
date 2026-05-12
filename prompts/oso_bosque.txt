@@ -1,0 +1,46 @@
+ECO/CRIATURA: El Oso del Bosque — "El Guardián de Myrkviðr"
+ARCHIVO DESTINO: assets/enemies/oso_art.png
+
+Único enemigo de UNA sola fase. No tiene transformación — es bruto puro,
+físico y directo, contraste mecánico y visual con Valdra (que es psicológica
+y etérea). El oso encarna la fuerza salvaje de Myrkviðr: nada de malicia
+sobrenatural, solo violencia ancestral y territorial.
+
+=== PROMPT POSITIVO ===
+dark fantasy concept art, massive ancient black bear creature standing on
+hind legs in a misty nordic forest, towering and scarred from countless
+battles, thick matted fur with frost and dried blood, enormous bared claws
+glinting in cold light, glowing pale blue eyes burning with primal rage,
+rune-carved scars on chest and shoulders hinting at forgotten pacts,
+twisted ancient trees and standing stones in background, low blue mist
+swirling around its feet, dramatic chiaroscuro lighting from above, deep
+moody palette of midnight blue, ash grey and embers of crimson, painterly
+style, oil painting feel, no text, no UI, full body, portrait orientation,
+highly detailed, concept art quality, atmospheric perspective
+
+=== PROMPT NEGATIVO ===
+text, watermark, UI, frame, border, modern, cartoonish, anime,
+bright daylight, clear sky, panda, cute, friendly, smiling, cubs, humans,
+people in foreground, photorealistic skin, neon colors, sparkles,
+sunny meadow, fantasy elf
+
+=== SETTINGS ===
+Modelo: Realistic Vision v5 o DreamShaper XL
+Steps: 35
+CFG Scale: 7
+Sampler: DPM++ 2M Karras
+Tamaño: 600x800 (portrait — mismo ratio que Valdra)
+Seed: cualquiera (guardar el que mejor capture la masa y los ojos)
+
+=== NOTAS DE USO ===
+Este arte se usa en:
+- enemies.js → ENEMIES.oso.image (slot principal del combate)
+
+Cuando esté listo el PNG, lo conecto agregando una línea en enemies.js:
+    image: 'assets/enemies/oso_art.png',
+
+Variantes deseables (mismo prompt, distinto seed) — opcional:
+- "oso enfurecido" para si más adelante le agregamos fase 2
+  (agregar "rearing up roaring, mouth wide open, eyes blazing crimson")
+- "oso silueta lejana" para el nodo en el mapa (agregar "distant silhouette
+  through trees, fog heavy, smaller in frame")

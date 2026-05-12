@@ -1,0 +1,47 @@
+ENEMIGO: El Niño Sin Nombre — "Lo que dejaste atrás"
+ARCHIVO DESTINO: assets/enemies/nino_sin_nombre_art.png
+
+Espectro infantil. Mecánicamente: pequeño y débil al inicio, crece cada
+turno (gana HP y daño). Visualmente: un niño descalzo, etéreo, con una
+mirada que no debería tener un niño. La sensación es de incomodidad
+moral, no de horror gore. Es lo que Konr no pudo proteger.
+
+=== PROMPT POSITIVO ===
+dark fantasy concept art, ghostly child standing alone in a snowy clearing,
+small barefoot boy in tattered medieval linen tunic, semi-transparent
+ethereal form, pale silvery skin, long messy dark hair, eyes too old for
+the face — sad, knowing, accusing, faint silver glow outlining the
+silhouette, cold blue mist around bare feet, nordic ruins and broken
+runestones in misty background, dramatic moonlight from above, deep
+midnight blue palette with crimson glow under the eyes, painterly style,
+oil painting feel, no text, no UI, no weapons, full body, portrait
+orientation, highly detailed, melancholic atmosphere, concept art quality
+
+=== PROMPT NEGATIVO ===
+text, watermark, UI, frame, border, modern clothing, cartoonish, anime,
+cute, smiling, happy, daytime, bright colors, monster, demon horns,
+zombie, gore, blood, scary teeth, weapons, toys, normal child portrait,
+school uniform
+
+=== SETTINGS ===
+Modelo: Realistic Vision v5 o DreamShaper XL
+Steps: 40
+CFG Scale: 7
+Sampler: DPM++ 2M Karras
+Tamaño: 600x800 (portrait)
+Seed: cualquiera (guardar el que mejor capture la mirada)
+
+=== NOTAS DE USO ===
+Slot: enemies.js → ENEMIES.ninoSinNombre.image
+    image: 'assets/enemies/nino_sin_nombre_art.png',
+
+Variantes deseables (mismo prompt, distinto seed) — opcional:
+- "creciendo" para si después le agregamos fase 2: el niño volviéndose
+  adolescente (agregar "growing taller, distorted limbs, hair lengthening,
+  features shifting between child and adult")
+- "silueta" para el nodo del mapa (agregar "small distant figure barely
+  visible through the snow")
+
+Tip de prompt: enfatizar la palabra "ethereal" y bajar valores de
+"realistic" en negativo si la cara sale demasiado cuerpo-de-niño-real
+(podría ser inquietante por las razones equivocadas).

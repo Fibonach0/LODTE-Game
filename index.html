@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KONR — La Torre del Umbral</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<!-- ===========================================
+     TITLE SCREEN
+     =========================================== -->
+<div id="screen-title" class="screen active">
+  <span class="title-rune">ᚱ</span>
+  <span class="title-rune">ᚦ</span>
+  <span class="title-rune">ᚢ</span>
+  <span class="title-rune">ᛟ</span>
+  <div class="title-main">
+    <div class="title-eyebrow">La Orden del Tabernero Errante presenta</div>
+    <div class="game-title">KONR</div>
+    <div class="title-subtitle">La Torre del Umbral</div>
+    <div class="title-divider"></div>
+    <p class="title-lore">"Vatnaborg cayó. Todos dicen que fueron los orcos.<br>Konr sabe que fueron sus manos."</p>
+    <button class="btn-primary">Ascender</button>
+    <button class="btn-secondary" id="btn-deck-editor" style="margin-top:12px;padding:10px 32px;">Editar Mazo</button>
+    <button class="btn-secondary" id="btn-new-run" style="margin-top:8px;padding:8px 24px;font-size:10px;display:none;color:var(--red2);border-color:var(--red-dim);">Nuevo run (resetea progreso)</button>
+    <div style="margin-top:16px;font-size:13px;color:var(--text3);font-style:italic;">
+      Prototipo — Piso 1 · El Eco de Valdra
+    </div>
+    <div id="title-scars" style="margin-top:8px;font-family:'Cinzel',serif;font-size:11px;color:var(--scarred);letter-spacing:0.1em;display:none;">
+      Cicatrices acumuladas: <span id="title-scar-num">0</span>
+    </div>
+  </div>
+  <div class="title-version">KONR · Early Prototype · v0.1</div>
+</div>
+
+<!-- ===========================================
+     DECK EDITOR SCREEN
+     =========================================== -->
+<div id="screen-deck-editor" class="screen">
+  <div style="width:100%;max-width:1000px;margin:0 auto;padding:24px 20px;display:flex;flex-direction:column;height:100vh;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.2em;color:var(--text3);text-transform:uppercase;margin-bottom:4px;">Constructor de Mazo</div>
+        <div style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold);">Mazo de Konr</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div id="deck-size-badge" style="font-family:'Cinzel',serif;font-size:13px;padding:6px 14px;border-radius:2px;border:1px solid var(--border2);color:var(--text2);">
+          Cartas: <span id="editor-deck-count">0</span> / mín. 50
+        </div>
+        <button class="btn-secondary" id="btn-editor-back">← Volver</button>
+        <button class="btn-primary" id="btn-editor-save">Guardar y Jugar</button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;flex:1;min-height:0;">
+
+      <!-- LEFT: Card pool -->
+      <div style="display:flex;flex-direction:column;min-height:0;">
+        <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.15em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;">
+          Cartas disponibles — hacé click para agregar al mazo
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+          <button class="filter-btn active" data-filter="all">Todas</button>
+          <button class="filter-btn" data-filter="attack">Ataque</button>
+          <button class="filter-btn" data-filter="skill">Habilidad</button>
+          <button class="filter-btn" data-filter="power">Poder</button>
+          <button class="filter-btn" data-filter="memory">Memoria</button>
+          <button class="filter-btn" data-filter="curse">Maldición</button>
+        </div>
+        <div id="card-pool" style="display:flex;flex-wrap:wrap;gap:10px;overflow-y:auto;padding-bottom:8px;align-content:flex-start;flex:1;"></div>
+      </div>
+
+      <!-- RIGHT: Current deck -->
+      <div style="display:flex;flex-direction:column;min-height:0;">
+        <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.15em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;">
+          Tu mazo actual — click para quitar
+        </div>
+        <div id="deck-list" style="flex:1;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:8px;"></div>
+        <div style="margin-top:8px;">
+          <button class="btn-secondary" id="btn-reset-deck" style="width:100%;font-size:11px;padding:8px;">Resetear al mazo base</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================================
+     MAP SCREEN — Mapa de Fornheim
+     Click en un nodo para viajar / combatir.
+     =========================================== -->
+<div id="screen-map" class="screen">
+  <div class="map-hud">
+    <div class="map-hud-left">
+      <div class="map-hud-stat">
+        <span class="map-hud-label">Vida</span>
+        <span class="map-hud-value" id="map-hp">70 / 70</span>
+      </div>
+      <div class="map-hud-stat">
+        <span class="map-hud-label">Cicatrices</span>
+        <span class="map-hud-value" id="map-scars">0</span>
+      </div>
+      <div class="map-hud-stat">
+        <span class="map-hud-label">Oro</span>
+        <span class="map-hud-value" id="map-gold">🪙 0</span>
+      </div>
+      <div class="map-hud-stat">
+        <span class="map-hud-label">Progreso</span>
+        <span class="map-hud-value" id="map-progress">0 / 7</span>
+      </div>
+      <div class="map-hud-relics" id="map-relics"></div>
+    </div>
+    <div class="map-hud-center">
+      <div class="map-hud-title">Región de Fornheim</div>
+      <div class="map-hud-subtitle">El peregrinaje de Konr</div>
+    </div>
+    <div class="map-hud-right">
+      <button class="btn-secondary" id="map-btn-title">← Menú</button>
+    </div>
+  </div>
+
+  <div class="map-canvas-wrap">
+    <!-- Mapa SVG estilizado (Opción B):
+         un único SVG con capa decorativa + rutas + nodos.
+         viewBox 0-100 hace que las coordenadas sean en %.
+         preserveAspectRatio="xMidYMid meet" mantiene proporción y centra. -->
+    <svg id="map-svg" class="map-svg" viewBox="0 0 100 130" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <!-- Textura de pergamino: ruido sepia tenue -->
+        <filter id="parchment-noise" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="3"/>
+          <feColorMatrix values="0 0 0 0 0.7   0 0 0 0 0.6   0 0 0 0 0.4   0 0 0 0.18 0"/>
+          <feComposite in2="SourceGraphic" operator="in"/>
+        </filter>
+        <!-- Gradiente del agua -->
+        <radialGradient id="sea-grad" cx="50%" cy="50%" r="80%">
+          <stop offset="0%"  stop-color="#3a6a8a"/>
+          <stop offset="100%" stop-color="#1a3a5c"/>
+        </radialGradient>
+        <!-- Glow para nodos disponibles -->
+        <filter id="node-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.2" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+
+      <!-- ─── Capa 1: Base pergamino ────────────── -->
+      <rect width="100" height="130" fill="#d8c598"/>
+      <rect width="100" height="130" fill="#a08858" filter="url(#parchment-noise)" opacity="0.5"/>
+
+      <!-- ─── Capa 2: Mares y océanos ──────────── -->
+      <!-- Mar del norte (entre tierra y Strondheim) -->
+      <path d="M 60,0 Q 65,4 70,5 Q 78,3 86,4 L 100,0 L 100,15
+               Q 92,12 84,13 Q 76,11 68,11 Q 62,8 60,5 Z"
+            fill="url(#sea-grad)" opacity="0.92"/>
+      <!-- Mar central (alrededor de Vatnaborg, hace de Vatnaborg una "isla") -->
+      <ellipse cx="55" cy="58" rx="14" ry="9" fill="url(#sea-grad)" opacity="0.92"/>
+      <!-- Mar del este/sur — gran cuerpo de agua -->
+      <path d="M 100,40 L 78,45 Q 70,52 68,60 Q 65,75 70,90 Q 80,110 100,130
+               L 100,40 Z"
+            fill="url(#sea-grad)" opacity="0.92"/>
+      <!-- Bahía del suroeste -->
+      <path d="M 0,90 Q 10,85 20,88 Q 30,95 35,105 Q 30,115 20,120 L 0,130 Z"
+            fill="url(#sea-grad)" opacity="0.85"/>
+
+      <!-- ─── Capa 3: Montañas ────────────────── -->
+      <g class="map-mountains" fill="#6a5a40" stroke="#3a2f20" stroke-width="0.2">
+        <!-- Cadena NW (Duneborg/Kuthul) -->
+        <polygon points="5,11 8,5  11,11"/>
+        <polygon points="9,13 12,7  15,13"/>
+        <polygon points="14,15 17,9 20,15"/>
+        <polygon points="19,18 22,12 25,18"/>
+        <polygon points="24,21 27,15 30,21"/>
+        <!-- Cadena central (Svellheim) -->
+        <polygon points="44,22 47,16 50,22"/>
+        <polygon points="48,25 51,19 54,25"/>
+        <polygon points="52,28 55,22 58,28"/>
+        <!-- Pico solitario (Khatun) -->
+        <polygon points="44,32 47,24 50,32"/>
+        <!-- Cadena oeste (Drekka Parbat) -->
+        <polygon points="3,42 6,36 9,42"/>
+        <polygon points="6,48 9,42 12,48"/>
+        <polygon points="2,54 5,48 8,54"/>
+      </g>
+
+      <!-- ─── Capa 4: Bosques ─────────────────── -->
+      <g class="map-forests" fill="#2a4520">
+        <!-- Bosque Fir-Coille -->
+        <circle cx="24" cy="40" r="1.2"/><circle cx="27" cy="41" r="1.3"/>
+        <circle cx="29" cy="43" r="1.4"/><circle cx="26" cy="44" r="1.2"/>
+        <circle cx="31" cy="40" r="1.1"/><circle cx="25" cy="46" r="1.3"/>
+        <circle cx="30" cy="46" r="1.2"/>
+        <!-- Myrkviðr -->
+        <circle cx="36" cy="38" r="1.4"/><circle cx="39" cy="40" r="1.2"/>
+        <circle cx="41" cy="42" r="1.5"/><circle cx="37" cy="44" r="1.3"/>
+        <circle cx="40" cy="46" r="1.2"/><circle cx="35" cy="46" r="1.1"/>
+        <!-- Bosques dispersos N -->
+        <circle cx="45" cy="14" r="0.9"/><circle cx="48" cy="13" r="0.8"/>
+        <circle cx="46" cy="16" r="0.9"/>
+      </g>
+
+      <!-- ─── Capa 5: Etiqueta de región (esquina) ─── -->
+      <text x="6" y="125" font-family="Cinzel, serif" font-size="3.2"
+            fill="#5a4a30" letter-spacing="0.2" font-weight="700"
+            opacity="0.8">REGIÓN DE FORNHEIM</text>
+
+      <!-- ─── Capa 6: Rutas (dashed) — se inyectan ─── -->
+      <g id="map-routes"></g>
+
+      <!-- ─── Capa 7: Nodos (clickable groups) ────── -->
+      <g id="map-nodes-svg"></g>
+    </svg>
+  </div>
+</div>
+
+<!-- ===========================================
+     SHOP SCREEN — Mercader Errante
+     =========================================== -->
+<div id="screen-shop" class="screen">
+  <div class="shop-content">
+    <div class="shop-header">
+      <div class="shop-icon">🪙</div>
+      <div class="shop-title">El Mercader Errante</div>
+      <div class="shop-flavor">"Una hoguera, un carro, monedas de cobre. La Orden del Tabernero no pregunta cómo conseguiste el oro."</div>
+      <div class="shop-gold-display">
+        Oro: <span id="shop-gold">0</span>
+      </div>
+    </div>
+
+    <div class="shop-section">
+      <div class="shop-section-title">CARTAS A LA VENTA</div>
+      <div id="shop-cards" class="shop-grid"></div>
+    </div>
+
+    <div class="shop-section">
+      <div class="shop-section-title">RELIQUIAS</div>
+      <div id="shop-relics" class="shop-grid"></div>
+    </div>
+
+    <div class="shop-section">
+      <div class="shop-section-title">SERVICIOS</div>
+      <div class="shop-services">
+        <button class="shop-service-btn" id="shop-upgrade-btn">🪙 100 — Mejorar una carta</button>
+        <button class="shop-service-btn" id="shop-remove-btn">🪙 75 — Eliminar una carta</button>
+        <button class="shop-service-btn" id="shop-sell-btn">🪙 +25 — Vender una carta</button>
+      </div>
+    </div>
+
+    <div class="shop-actions">
+      <button class="btn-primary" id="shop-leave-btn">Seguir camino</button>
+    </div>
+  </div>
+
+  <!-- Mini-modal para elegir carta a eliminar/vender -->
+  <div id="shop-card-selector" class="shop-card-selector">
+    <div class="shop-card-selector-content">
+      <div class="shop-card-selector-title" id="shop-card-selector-title">Elegí una carta</div>
+      <div class="shop-card-selector-list" id="shop-card-selector-list"></div>
+      <button class="btn-secondary" id="shop-card-selector-cancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================================
+     RUINS SCREEN — Encontrar reliquias
+     =========================================== -->
+<div id="screen-ruins" class="screen">
+  <div class="ruins-content">
+    <div class="ruins-icon">🏛</div>
+    <div class="ruins-title" id="ruins-title">Ruinas Olvidadas</div>
+    <div class="ruins-flavor" id="ruins-flavor">Polvo y silencio. Algo brilla entre las piedras.</div>
+    <div class="ruins-options" id="ruins-options"></div>
+    <button class="btn-secondary" id="ruins-skip">Irse sin nada</button>
+  </div>
+</div>
+
+<!-- ===========================================
+     EVENT SCREEN — Decisiones narrativas
+     =========================================== -->
+<div id="screen-event" class="screen">
+  <div class="event-content">
+    <div class="event-icon">❓</div>
+    <div class="event-title" id="event-title">Encuentro</div>
+    <div class="event-description" id="event-description">Algo cruza tu camino...</div>
+    <div class="event-options" id="event-options"></div>
+  </div>
+</div>
+
+<!-- ===========================================
+     REST SCREEN — Aldea / fogata
+     =========================================== -->
+<div id="screen-rest" class="screen">
+  <div class="rest-content">
+    <div class="rest-icon">🔥</div>
+    <div class="rest-title" id="rest-title">Mjölby</div>
+    <div class="rest-flavor" id="rest-flavor">Konr se sienta junto al fuego.</div>
+    <div class="rest-options">
+      <button class="rest-option" id="rest-heal">
+        <div class="rest-option-icon">❤</div>
+        <div class="rest-option-name">Descansar</div>
+        <div class="rest-option-desc" id="rest-heal-desc">Curar HP</div>
+      </button>
+      <button class="rest-option" id="rest-skip">
+        <div class="rest-option-icon">🚶</div>
+        <div class="rest-option-name">Seguir camino</div>
+        <div class="rest-option-desc">No descansar — guardar el lugar para después</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================================
+     RUN SCREEN (combate)
+     =========================================== -->
+<div id="screen-run" class="screen">
+  <button class="btn-abandon-combat" id="btn-abandon-combat" title="Volver al mapa (no completa el combate)">← Mapa</button>
+  <div class="run-layout">
+
+    <!-- TOP BAR: stats del jugador, piso, íthyr -->
+    <div class="top-bar">
+      <div class="stats-left">
+        <div class="stat-block">
+          <span class="stat-label">Vida</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="display:flex;flex-direction:column;gap:3px;">
+              <div class="stat-bar-wrap" style="width:80px;">
+                <div class="stat-bar-bg"></div>
+                <div class="stat-bar hp" id="bar-hp" style="width:100%;"></div>
+              </div>
+              <div class="stat-bar-wrap" style="width:80px;" id="bar-block-wrap">
+                <div class="stat-bar-bg"></div>
+                <div class="stat-bar" id="bar-block" style="width:0%;background:#2a6aaa;"></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span class="stat-num" id="hp-num">70/70</span>
+              <span id="topbar-block-num" style="font-size:11px;color:#5aaaff;font-family:'Cinzel',serif;display:none;">🛡 0</span>
+            </div>
+          </div>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Cicatrices</span>
+          <span class="scarred-badge" id="scar-count">0</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Oro</span>
+          <span class="stat-num" id="combat-gold">🪙 0</span>
+        </div>
+        <div class="combat-relics-wrap" id="combat-relics"></div>
+      </div>
+      <div class="floor-info">
+        <div class="floor-num" id="floor-num">COMBATE</div>
+        <div class="floor-name" id="floor-name">—</div>
+      </div>
+      <div class="stats-right">
+        <div class="ithyr-display" id="ithyr-display"></div>
+        <div class="stat-block" style="text-align:right;">
+          <span class="stat-label">Íthyr</span>
+          <span class="stat-num" id="ithyr-num">3/3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARENA: enemigo vs jugador -->
+    <div class="arena">
+      <div class="arena-divider"></div>
+
+      <!-- ENEMY SIDE -->
+      <div class="arena-side">
+        <div class="enemy-container">
+          <div class="enemy-art">
+            <div class="enemy-silhouette" id="enemy-sil">👻</div>
+            <!-- Overlay del escudo del enemigo — visible cuando block > 0 -->
+            <div class="enemy-block-overlay" id="enemy-block-overlay">
+              <span class="enemy-block-icon">🛡</span>
+              <span class="enemy-block-num" id="enemy-block-num">0</span>
+            </div>
+          </div>
+          <div class="enemy-name" id="enemy-name">Eco de Valdra</div>
+          <div class="enemy-title" id="enemy-title">"La Mentora Caída"</div>
+          <div class="hp-bar-enemy">
+            <div class="hp-fill-enemy" id="enemy-hp-bar" style="width:100%;"></div>
+          </div>
+          <div class="enemy-hp-num" id="enemy-hp-num">60 / 60</div>
+          <div class="enemy-intent" id="enemy-intent">Intenta: Golpe del Umbral (9)</div>
+          <div class="enemy-block-badge" id="enemy-block-badge">Escudo: 0</div>
+        </div>
+      </div>
+
+      <!-- PLAYER SIDE -->
+      <div class="arena-side">
+        <div class="player-status" id="player-status">
+          <div class="player-portrait">
+            <img src="assets/ui/konr_portrait_art.png" alt="Konr Valdmaren">
+          </div>
+          <div class="player-name">Konr Valdmaren</div>
+          <div class="player-lore">"El hombre que partió el sello.<br>El que no puede morir."</div>
+          <div id="block-display" style="display:none;margin-bottom:12px;background:var(--blue);border:1px solid var(--blue2);border-radius:4px;padding:10px 14px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="font-size:32px;line-height:1;">🛡</div>
+              <div>
+                <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.15em;color:#2a5a8c;text-transform:uppercase;">Escudo activo</div>
+                <div id="block-num" style="font-family:'Cinzel',serif;font-size:28px;font-weight:700;color:#5aaaff;line-height:1.1;">0</div>
+              </div>
+              <div style="font-size:11px;color:#2a5a8c;font-style:italic;line-height:1.4;">Absorbe daño<br>antes de tu vida</div>
+            </div>
+          </div>
+          <div class="status-effects" id="status-effects"></div>
+          <div style="font-size:13px;color:var(--text3);font-style:italic;" id="player-hint">
+            Jugá cartas para atacar o defenderte.
+          </div>
+        </div>
+      </div>
+
+      <!-- COMBAT LOG (texto flotante) -->
+      <div class="combat-log" id="combat-log">El eco de Valdra te mira. Recuerda.</div>
+    </div>
+
+    <!-- HAND: cartas, contador de mazo, botón fin de turno -->
+    <div class="hand-area">
+      <div class="hand-header">
+        <span class="hand-label">Tu mano</span>
+        <div class="deck-info">
+          <span class="deck-count" id="deck-count">Mazo: 10</span>
+          <span class="deck-count" id="discard-count">Descarte: 0</span>
+        </div>
+        <button class="btn-end-turn" id="btn-end-turn">Terminar turno →</button>
+      </div>
+      <div class="hand-cards" id="hand-cards"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===========================================
+     REWARD SCREEN (post-victoria)
+     =========================================== -->
+<div id="screen-reward" class="screen">
+  <div class="reward-title">Elegí una carta para tu mazo</div>
+  <div class="reward-sub">"Cada cicatriz es también una herramienta."</div>
+  <div class="reward-cards" id="reward-cards"></div>
+  <button class="btn-secondary">Rechazar — no necesito nada</button>
+</div>
+
+<!-- ===========================================
+     RESULT SCREEN (victoria/derrota)
+     =========================================== -->
+<div id="screen-result" class="screen">
+  <div class="result-title" id="result-title">Victoria</div>
+  <div class="result-flavor" id="result-flavor"></div>
+  <div class="result-sub" id="result-sub"></div>
+  <div class="scar-reveal" id="scar-reveal" style="display:none;">
+    <div class="scar-label">Nueva Cicatriz</div>
+    <div class="scar-name" id="scar-name"></div>
+    <div class="scar-desc" id="scar-desc"></div>
+  </div>
+  <div class="result-btns">
+    <button class="btn-primary" id="result-btn">Continuar</button>
+    <button class="btn-secondary">Menú principal</button>
+  </div>
+</div>
+
+<!-- ===========================================
+     OVERLAYS
+     =========================================== -->
+<div class="tooltip" id="tooltip"></div>
+
+<div class="log-panel" id="log-panel">
+  <div class="log-tab" id="log-tab">
+    <div class="log-badge" id="log-badge">0</div>
+    ◀ Historial
+  </div>
+  <div class="log-body">
+    <div class="log-header">
+      <span class="log-title">Historial de combate</span>
+      <span class="log-clear">Limpiar</span>
+    </div>
+    <div class="log-entries" id="log-entries">
+      <div class="log-entry log-type-system">El combate comienza. Konr asciende.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================================
+     CARD PREVIEW MODAL
+     Se abre al clickear una carta en el editor.
+     =========================================== -->
+<div id="card-preview-overlay" class="card-preview-overlay">
+  <div class="card-preview-content" onclick="event.stopPropagation();">
+    <div class="card-preview-card" id="card-preview-card"></div>
+    <div class="card-preview-meta" id="card-preview-meta">En tu mazo: 0 / 8</div>
+    <div class="card-preview-actions">
+      <button class="btn-secondary" id="card-preview-close">Cerrar</button>
+      <button class="btn-primary" id="card-preview-add">Agregar al mazo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================================
+     SCRIPTS
+     Orden importante: definiciones primero,
+     bootstrap (main.js) al final.
+     =========================================== -->
+<script src="js/log.js"></script>
+<script src="js/state.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/enemies.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/combat.js"></script>
+<script src="js/deck-editor.js"></script>
+<script src="js/map.js"></script>
+<script src="js/rest.js"></script>
+<script src="js/events.js"></script>
+<script src="js/relics.js"></script>
+<script src="js/shop.js"></script>
+<script src="js/ruins.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

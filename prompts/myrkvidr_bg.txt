@@ -1,0 +1,35 @@
+FONDO: Myrkviðr — El Bosque Oscuro
+ARCHIVO DESTINO: assets/backgrounds/myrkvidr_bg.png
+
+=== PROMPT POSITIVO ===
+dark fantasy forest landscape, ancient nordic woodland at twilight,
+massive twisted black trees with gnarled roots and pale moss,
+cold blue mist drifting between trunks, broken stone paths half-swallowed
+by undergrowth, distant rune-carved standing stones, watching crows on
+bare branches, fallen warrior helmet half-buried in leaves, faint glow
+of unseen torchlight far in the distance, painterly atmospheric perspective,
+deep blue-grey palette with embers of crimson, chiaroscuro lighting,
+no text, no UI, no characters in foreground, atmospheric concept art,
+high detail, oil painting feel, 16:9 aspect ratio
+
+=== PROMPT NEGATIVO ===
+text, watermark, UI, frame, border, characters, people, modern,
+cartoonish, anime, bright daylight, clear sky, snow, desert,
+tropical, fantasy elf, sparkles, neon, photorealistic skin
+
+=== SETTINGS ===
+Modelo: Realistic Vision v5 o DreamShaper XL
+Steps: 40
+CFG Scale: 7
+Sampler: DPM++ 2M Karras
+Tamaño: 1920x1080 (paisaje 16:9) — o 1024x1024 si tu modelo prefiere cuadrado
+Seed: cualquiera (guardar el que quede mejor)
+
+=== NOTAS DE USO ===
+Este fondo se usa en:
+- La pantalla de combate cuando el nodo del mapa está en Myrkviðr
+- Posiblemente como fondo del nodo en el mapa al hacer hover
+Variantes deseables (mismo prompt, distinto seed):
+- Una "diurna" más luminosa (cambiar "twilight" → "overcast morning")
+- Una "tormenta" para el evento del ataque nocturno (agregar "thunderstorm,
+  rain, lightning between trees")
